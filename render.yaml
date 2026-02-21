@@ -1,0 +1,50 @@
+services:
+  - type: web
+    name: nk-educatif-sportif
+    env: php
+    plan: free
+    buildCommand: composer install --no-dev && php artisan migrate --force
+    startCommand: vendor/bin/heroku-php-apache2 public/
+    envVars:
+      - key: APP_NAME
+        value: NK EDUCATIF SPORTIF
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_URL
+        generateValue: true
+      - key: LOG_CHANNEL
+        value: stack
+      - key: DB_CONNECTION
+        value: mysql
+      - key: DB_HOST
+        fromDatabase:
+          name: nk-educatif-db
+          property: host
+      - key: DB_PORT
+        value: "3306"
+      - key: DB_DATABASE
+        fromDatabase:
+          name: nk-educatif-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: nk-educatif-db
+          property: username
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: nk-educatif-db
+          property: password
+      - key: CACHE_DRIVER
+        value: file
+      - key: QUEUE_CONNECTION
+        value: sync
+      - key: SESSION_DRIVER
+        value: file
+
+  - type: mysql
+    name: nk-educatif-db
+    plan: free
+    version: "8"
+    ipAllowList: []
