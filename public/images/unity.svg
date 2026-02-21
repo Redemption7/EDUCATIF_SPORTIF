@@ -1,0 +1,54 @@
+<svg viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="unityGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF9500;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFE135;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="personGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2D5F3D;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1A2E3A;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="600" height="400" fill="url(#unityGrad)"/>
+  
+  <!-- Circle of unity - people forming a circle -->
+  <circle cx="300" cy="200" r="180" fill="none" stroke="#2D5F3D" stroke-width="3" opacity="0.3"/>
+  
+  <!-- Person 1 -->
+  <circle cx="300" cy="50" r="20" fill="url(#personGrad)"/>
+  <polygon points="300,75 290,100 310,100" fill="url(#personGrad)"/>
+  <line x1="295" y1="85" x2="280" y2="120" stroke="url(#personGrad)" stroke-width="3"/>
+  <line x1="305" y1="85" x2="320" y2="120" stroke="url(#personGrad)" stroke-width="3"/>
+  
+  <!-- Person 2 -->
+  <circle cx="480" cy="140" r="20" fill="url(#personGrad)"/>
+  <polygon points="480,165 470,190 490,190" fill="url(#personGrad)"/>
+  
+  <!-- Person 3 -->
+  <circle cx="480" cy="320" r="20" fill="url(#personGrad)"/>
+  <polygon points="480,345 470,370 490,370" fill="url(#personGrad)"/>
+  
+  <!-- Person 4 -->
+  <circle cx="120" cy="320" r="20" fill="url(#personGrad)"/>
+  <polygon points="120,345 110,370 130,370" fill="url(#personGrad)"/>
+  
+  <!-- Person 5 -->
+  <circle cx="120" cy="140" r="20" fill="url(#personGrad)"/>
+  <polygon points="120,165 110,190 130,190" fill="url(#personGrad)"/>
+  
+  <!-- Center heart symbol -->
+  <path d="M 300 200 L 310 190 Q 320 180 330 190 L 325 205 Q 320 210 300 220 Q 280 210 275 205 L 270 190 Q 280 180 290 190 Z" fill="#FF9500" stroke="#1A2E3A" stroke-width="1"/>
+  
+  <!-- Connecting hands -->
+  <line x1="290" y1="70" x2="270" y2="140" stroke="#2D5F3D" stroke-width="3"/>
+  <line x1="310" y1="70" x2="330" y2="140" stroke="#2D5F3D" stroke-width="3"/>
+  <line x1="440" y1="160" x2="360" y2="200" stroke="#2D5F3D" stroke-width="3"/>
+  <line x1="440" y1="300" x2="360" y2="200" stroke="#2D5F3D" stroke-width="3"/>
+  <line x1="160" y1="300" x2="240" y2="200" stroke="#2D5F3D" stroke-width="3"/>
+  <line x1="160" y1="160" x2="240" y2="200" stroke="#2D5F3D" stroke-width="3"/>
+  
+  <!-- Decorative elements -->
+  <circle cx="150" cy="80" r="12" fill="#2D5F3D" opacity="0.6"/>
+  <circle cx="500" cy="80" r="12" fill="#2D5F3D" opacity="0.6"/>
+</svg>

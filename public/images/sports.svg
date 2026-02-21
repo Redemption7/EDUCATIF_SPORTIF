@@ -1,0 +1,31 @@
+<svg viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="sportGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF9500;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2D5F3D;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="600" height="400" fill="url(#sportGrad)"/>
+  
+  <!-- Stadium background -->
+  <ellipse cx="300" cy="350" rx="250" ry="80" fill="#1A2E3A" opacity="0.3"/>
+  
+  <!-- Soccer ball -->
+  <circle cx="300" cy="150" r="80" fill="#FFFFFF" stroke="#1A2E3A" stroke-width="2"/>
+  <circle cx="300" cy="150" r="75" fill="none" stroke="#1A2E3A" stroke-width="1"/>
+  
+  <!-- Pentagon pattern -->
+  <g transform="translate(300, 150)">
+    <path d="M 0,-60 L 57,-19 L 35,49 L -35,49 L -57,-19 Z" fill="none" stroke="#1A2E3A" stroke-width="2"/>
+    <path d="M 0,-30 L 28,-9 L 17,24 L -17,24 L -28,-9 Z" fill="#1A2E3A" opacity="0.2"/>
+    <circle cx="0" cy="0" r="20" fill="none" stroke="#1A2E3A" stroke-width="1"/>
+  </g>
+  
+  <!-- Players silhouettes -->
+  <circle cx="100" cy="250" r="30" fill="#1A2E3A" opacity="0.6"/>
+  <circle cx="500" cy="280" r="35" fill="#1A2E3A" opacity="0.5"/>
+  
+  <!-- Decorative elements -->
+  <circle cx="150" cy="80" r="15" fill="#FFE135" opacity="0.7"/>
+  <circle cx="500" cy="120" r="20" fill="#FFE135" opacity="0.5"/>
+</svg>
