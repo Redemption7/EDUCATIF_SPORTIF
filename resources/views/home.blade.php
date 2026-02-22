@@ -664,7 +664,7 @@
                 @auth
                     <li><a href="{{ route('admin.dashboard') }}" style="background: var(--primary-orange); padding: 8px 16px; border-radius: 25px; color: white !important;">Dashboard</a></li>
                 @else
-                    <li><a href="{{ route('login') }}" style="background: var(--primary-green); padding: 8px 16px; border-radius: 25px; color: white !important;">Admin Login</a></li>
+                    <li><a href="{{ route('login') }}" style="background: var(--primary-green); padding: 8px 16px; border-radius: 25px; color: white !important;">Login</a></li>
                 @endauth
             </ul>
         </div>
@@ -1228,7 +1228,7 @@
     </div>
 
     <!-- Success Popup Modal -->
-    <div id="successModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center; z-index: 2001;">
+    <div id="successModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); align-items: center; justify-content: center; z-index: 2001;">
         <div style="background: white; padding: 40px; border-radius: 15px; text-align: center; max-width: 400px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);">
             <div style="font-size: 50px; margin-bottom: 20px;">✅</div>
             <h2 style="color: #27ae60; margin-bottom: 15px; font-size: 24px;">Registration Successful!</h2>
