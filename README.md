@@ -16,6 +16,10 @@ A modern, elegant sports registration platform built with Laravel 11 and Vue.js.
 - Success notification upon registration
 - Email and phone contact information
 
+**Assets**
+
+The front‑end uses three team images (CEO, Executive Director, Non Executive Director) and a logo placed in `public/images` with the filenames `ceo.png`, `executive_director.png`, `non_exec_africa.png` and `logo.png`. Replace these with the supplied photographs to update the site portraits.
+
 ### 📊 Admin Dashboard
 - Stunning minimalist design matching modern SaaS platforms
 - Real-time registration statistics (Total, Pending, Approved, Rejected)
@@ -152,7 +156,7 @@ Visit `http://localhost:8000` in your browser.
 
 | Field | Value |
 |-------|-------|
-| Email | admin@nkeducatif.com |
+| Email | nkes.academy@nkes-sports.org |
 | Password | password123 |
 
 ## Usage

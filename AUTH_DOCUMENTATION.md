@@ -42,7 +42,7 @@ Unauthenticated users are redirected to `/login`
 
 ## Login Credentials
 
-**Email:** admin@nkeducatif.com
+**Email:** nkes.academy@nkes-sports.org
 **Password:** password123
 
 ## Security Features

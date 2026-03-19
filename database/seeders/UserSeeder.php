@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
         // Create admin user
         User::create([
             'name' => 'Admin User',
-            'email' => 'admin@nkeducatif.com',
+            'email' => 'nkes.academy@nkes-sports.org',
             'password' => Hash::make('password123'),
             'email_verified_at' => now(),
         ]);

@@ -28,12 +28,28 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #ffffff 0%, var(--light-gray) 100%);
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--primary-orange) 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
+        }
+
+        .login-card {
+            position: relative;
+        }
+
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: -30px;
+            right: -30px;
+            width: 60px;
+            height: 60px;
+            background: var(--primary-orange);
+            border-radius: 50%;
+            z-index: 0;
         }
 
         .login-container {
@@ -47,11 +63,20 @@
             border-radius: 12px;
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
             padding: 40px;
+            animation: fadeIn 0.6s ease-out;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .login-header {
             text-align: center;
             margin-bottom: 32px;
+            position: relative;
         }
 
         .logo {
@@ -60,6 +85,14 @@
             font-weight: 700;
             color: var(--primary-green);
             margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .logo img {
+            height: 40px;
         }
 
         .subtitle {
@@ -229,7 +262,10 @@
     <div class="login-container">
         <div class="login-card">
             <div class="login-header">
-                <div class="logo">NK EDUCATIF</div>
+                <div class="logo">
+                <img src="{{ asset('images/logo.png') }}" alt="NKES logo" />
+                NK EDUCATIF SPORTIF
+            </div>
                 <div class="subtitle">Admin Portal</div>
             </div>
 
@@ -257,7 +293,7 @@
                         value="{{ old('email') }}"
                         required 
                         autofocus
-                        placeholder="admin@nkeducatif.com"
+                        placeholder="nkes.academy@nkes-sports.org"
                     >
                     @error('email')
                         <span style="color: #dc2626; font-size: 12px; margin-top: 4px; display: block;">{{ $message }}</span>
@@ -286,13 +322,8 @@
                 <button type="submit" class="btn-login">Login</button>
             </form>
 
-            <div class="divider">Demo Credentials</div>
-
-            <div class="demo-credentials">
-                <strong>Email:</strong>
-                admin@nkeducatif.com<br>
-                <strong>Password:</strong>
-                password123
+            <div class="footer-link">
+                <a href="{{ route('home') }}">&larr; Back to Home</a>
             </div>
         </div>
     </div>

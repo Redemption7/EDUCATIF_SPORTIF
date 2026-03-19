@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #FF7A59 0%, #1D5944 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -98,7 +98,7 @@
         .submit-btn {
             width: 100%;
             padding: 14px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #FF7A59 0%, #1D5944 100%);
             color: white;
             border: none;
             border-radius: 8px;
@@ -155,7 +155,7 @@
     <div class="container">
         <div class="form-header">
             <h1>🏆 Sports Registration</h1>
-            <p>Join NK EDUCATIF SPORTIF and pursue your passion for sports</p>
+            <p>Brings unity across Africa! Learn. Play. Grow</p>
         </div>
 
         <form id="registrationForm">
@@ -236,7 +236,7 @@
             <p style="color: #666; margin-bottom: 25px; line-height: 1.6;">
                 Thank you for registering! Your application has been submitted successfully. Our admin team will review your registration and contact you soon.
             </p>
-            <button onclick="closeSuccessModal()" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 12px 30px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; width: 100%;">
+            <button onclick="closeSuccessModal()" style="background: linear-gradient(135deg, #FF7A59 0%, #1D5944 100%); color: white; border: none; padding: 12px 30px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; width: 100%;">
                 Close
             </button>
         </div>

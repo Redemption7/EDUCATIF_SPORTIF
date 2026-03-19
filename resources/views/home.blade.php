@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NK EDUCATIF SPORTIF - Excellence in Sports Education</title>
+    <meta name="description" content="{{ $tagline }} {{ __('messages.meta_description') }}">
+    <title>{{ __('messages.meta_title') }}</title>
     @vite('resources/css/app.css')
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -89,6 +90,94 @@
 
         nav a:hover {
             color: var(--primary-orange);
+        }
+
+        /* Language dropdown */
+        .lang-dropdown-wrapper {
+            position: relative;
+        }
+        .lang-dropdown {
+            position: relative;
+        }
+        .lang-dropdown-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 6px 12px;
+            background: var(--light-gray);
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-dark);
+            font-family: inherit;
+        }
+        .lang-dropdown-toggle:hover {
+            background: #eee;
+            border-color: var(--primary-green);
+        }
+        .lang-icon {
+            font-size: 1.1rem;
+        }
+        .lang-arrow {
+            font-size: 0.65rem;
+            opacity: 0.8;
+        }
+        .lang-dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 4px;
+            min-width: 160px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+            list-style: none;
+            padding: 6px 0;
+            z-index: 1100;
+        }
+        .lang-dropdown:hover .lang-dropdown-menu {
+            display: block;
+        }
+        .lang-dropdown-menu a {
+            display: block;
+            padding: 10px 16px;
+            color: var(--text-dark);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        .lang-dropdown-menu a:hover,
+        .lang-dropdown-menu a.active {
+            background: var(--light-gray);
+            color: var(--primary-orange);
+        }
+
+        /* mobile menu toggle */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            nav ul {
+                display: none;
+                flex-direction: column;
+                gap: 1rem;
+                background: white;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                padding: 1rem 2rem;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            }
+            nav ul.show { display: flex; }
         }
 
         .container {
@@ -181,6 +270,23 @@
             border-top: 1px solid rgba(255,255,255,0.2);
         }
 
+        /* about section */
+        .about {
+            padding: 80px 2rem;
+            background: var(--light-gray);
+            color: var(--text-dark);
+        }
+        .about h3 {
+            color: var(--primary-green);
+            font-weight: 600;
+        }
+        .about ul {
+            margin-top: 0.5rem;
+        }
+        .about ul li {
+            margin-bottom: 0.5rem;
+        }
+
         .stat-item {
             text-align: center;
         }
@@ -247,6 +353,33 @@
             text-align: center;
         }
 
+        /* sports list section */
+        .sports-list {
+            padding: 80px 2rem;
+            background: white;
+        }
+        .sports-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .sport-item {
+            background: var(--light-gray);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 500;
+            color: var(--primary-green);
+            border: 1px solid var(--primary-green);
+            transition: background 0.2s, transform 0.2s;
+        }
+        .sport-item:hover {
+            background: var(--primary-green);
+            color: white;
+            transform: translateY(-3px);
+        }
+
         .feature-card:hover {
             transform: translateY(-10px);
             box-shadow: 0 15px 40px rgba(0,0,0,0.15);
@@ -299,15 +432,53 @@
         .team-member-image {
             width: 100%;
             height: 300px;
-            background: linear-gradient(135deg, var(--primary-orange), var(--primary-green));
+            background: #e8e8e8;
             overflow: hidden;
             position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .team-member-image.loading::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(90deg, #e8e8e8 25%, #f5f5f5 50%, #e8e8e8 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            z-index: 1;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .team-member-image .placeholder-icon {
+            display: none;
+            width: 80px;
+            height: 80px;
+            opacity: 0.4;
+        }
+
+        .team-member-image.error {
+            background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+        }
+
+        .team-member-image.error .placeholder-icon {
+            display: block;
+        }
+
+        .team-member-image.error img {
+            display: none;
         }
 
         .team-member img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            object-position: center top;
         }
 
         .team-member-info {
@@ -413,6 +584,14 @@
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2.5rem;
             margin-top: 3rem;
+            position: relative;
+        }
+        .testimonial-card {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
         }
 
         .testimonial-card {
@@ -654,17 +833,23 @@
     <nav>
         <div class="container">
             <div class="logo">
-                <h1>NK EDUCATIF</h1>
+                <img src="{{ asset('images/logo.png') }}" alt="NKES logo" style="height:40px;" />
+                <h1>NK EDUCATIF SPORTIF</h1>
             </div>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
             <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#programs">Programs</a></li>
-                <li><a href="#team">Team</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="#home">{{ __('messages.nav_home') }}</a></li>
+                <li><a href="#about">{{ __('messages.nav_about') }}</a></li>
+                <li><a href="#sports">{{ __('messages.nav_sports') }}</a></li>
+                <li><a href="#programs">{{ __('messages.nav_programs') }}</a></li>
+                <li><a href="#team">{{ __('messages.nav_team') }}</a></li>
+                <li><a href="#contact">{{ __('messages.nav_contact') }}</a></li>
+                @include('partials.language-switcher')
+                <li><a href="{{ route('shop') }}" style="background: var(--accent-yellow); padding: 8px 16px; border-radius: 25px; color: var(--text-dark) !important; font-weight: 600;">{{ __('messages.nav_shop') }}</a></li>
                 @auth
-                    <li><a href="{{ route('admin.dashboard') }}" style="background: var(--primary-orange); padding: 8px 16px; border-radius: 25px; color: white !important;">Dashboard</a></li>
+                    <li><a href="{{ route('admin.dashboard') }}" style="background: var(--primary-orange); padding: 8px 16px; border-radius: 25px; color: white !important;">{{ __('messages.nav_dashboard') }}</a></li>
                 @else
-                    <li><a href="{{ route('login') }}" style="background: var(--primary-green); padding: 8px 16px; border-radius: 25px; color: white !important;">Login</a></li>
+                    <li><a href="{{ route('login') }}" style="background: var(--primary-green); padding: 8px 16px; border-radius: 25px; color: white !important;">{{ __('messages.nav_login') }}</a></li>
                 @endauth
             </ul>
         </div>
@@ -674,67 +859,112 @@
     <section class="hero" id="home">
         <div class="container">
             <div class="hero-content">
-                <h1>Build Champions. Shape Futures.</h1>
-                <p>Excellence in sports education through professional coaching, modern facilities, and proven methods</p>
+                <p id="hero-greeting" style="margin-bottom:0.5rem;font-size:1rem;opacity:0.9;"></p>
+                <h1>{{ $tagline }}</h1>
+                <p>{{ $subtagline }}</p>
+                <p>{{ __('messages.hero_excellence') }}</p>
                 <div>
-                    <button onclick="openRegistrationModal()" class="cta-button">Register for Sports</button>
-                    <a href="#programs" class="cta-button cta-button-secondary">Explore Programs</a>
+                    <button onclick="openRegistrationModal()" class="cta-button">{{ __('messages.register_sports') }}</button>
+                    <a href="#programs" class="cta-button cta-button-secondary">{{ __('messages.explore_programs') }}</a>
                 </div>
                 <div class="hero-stats">
                     <div class="stat-item">
-                        <div class="stat-number">500+</div>
-                        <div class="stat-label">Active Athletes</div>
+                        <div class="stat-number" data-target="{{ $activeAthletes }}">0</div>
+                        <div class="stat-label">{{ __('messages.active_athletes') }}</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-number">25+</div>
-                        <div class="stat-label">Expert Coaches</div>
+                        <div class="stat-number" data-target="{{ $expertCoaches }}">0</div>
+                        <div class="stat-label">{{ __('messages.expert_coaches') }}</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-number">12+</div>
-                        <div class="stat-label">Sports Programs</div>
+                        <div class="stat-number" data-target="{{ $programsCount }}">0</div>
+                        <div class="stat-label">{{ __('messages.sports_programs') }}</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- About / Mission & Vision -->
+    <section class="about" id="about">
+        <div class="container">
+            <h2 class="section-title">{{ __('messages.about_title') }}</h2>
+            <p class="section-subtitle" style="max-width:800px; margin:0 auto;">{{ $about }}</p>
+
+            <h3 class="section-title" style="font-size:2rem; margin-top:3rem;">{{ __('messages.our_mission') }}</h3>
+            <p style="max-width:800px; margin:0 auto;">{{ $mission }}</p>
+
+            <h3 class="section-title" style="font-size:2rem; margin-top:2.5rem;">{{ __('messages.continental_goal') }}</h3>
+            <p style="max-width:800px; margin:0 auto;">{{ $unifyMission }}</p>
+
+            <h3 class="section-title" style="font-size:2rem; margin-top:2.5rem;">{{ __('messages.vision') }}</h3>
+            <p style="max-width:800px; margin:0 auto;">{{ $vision }}</p>
+            <ul style="max-width:800px; margin:1rem auto 0; list-style: disc inside;">
+                @foreach($visionPoints as $point)
+                    <li>{{ $point }}</li>
+                @endforeach
+            </ul>
+
+            <h3 class="section-title" style="font-size:2rem; margin-top:2.5rem;">{{ __('messages.objectives') }}</h3>
+            <ul style="max-width:800px; margin:1rem auto 0; list-style: disc inside;">
+                @foreach($objectives as $obj)
+                    <li>{{ $obj }}</li>
+                @endforeach
+            </ul>
+        </div>
+    </section>
+
     <!-- Features Section -->
     <section class="features">
         <div class="container">
-            <h2 class="section-title">Why Choose NK EDUCATIF?</h2>
-            <p class="section-subtitle">We provide comprehensive sports education with world-class facilities and experienced coaching</p>
+            <h2 class="section-title">{{ __('messages.why_choose') }}</h2>
+            <p class="section-subtitle">{{ __('messages.why_choose_sub') }}</p>
             
             <div class="features-grid">
                 <div class="feature-card">
                     <div class="feature-icon">🏆</div>
-                    <h3>Expert Coaching</h3>
-                    <p>Learn from certified coaches with international experience and proven track records in developing elite athletes</p>
+                    <h3>{{ __('messages.expert_coaching') }}</h3>
+                    <p>{{ __('messages.expert_coaching_desc') }}</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">🏛️</div>
-                    <h3>Modern Facilities</h3>
-                    <p>Access state-of-the-art training facilities equipped with the latest sports technology and equipment</p>
+                    <h3>{{ __('messages.modern_facilities') }}</h3>
+                    <p>{{ __('messages.modern_facilities_desc') }}</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">📈</div>
-                    <h3>Structured Programs</h3>
-                    <p>Progressive training plans designed to develop fundamental skills and advanced techniques at every level</p>
+                    <h3>{{ __('messages.structured_programs') }}</h3>
+                    <p>{{ __('messages.structured_programs_desc') }}</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">🤝</div>
-                    <h3>Team Building</h3>
-                    <p>Build character, confidence, and teamwork through sports in a supportive and encouraging environment</p>
+                    <h3>{{ __('messages.team_building') }}</h3>
+                    <p>{{ __('messages.team_building_desc') }}</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">🌍</div>
-                    <h3>Community Focus</h3>
-                    <p>Join a diverse community of athletes and families committed to excellence and personal growth</p>
+                    <h3>{{ __('messages.community_focus') }}</h3>
+                    <p>{{ __('messages.community_focus_desc') }}</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">⭐</div>
-                    <h3>Competitive Edge</h3>
-                    <p>Develop competitive skills and tactical knowledge to succeed at local, regional, and national levels</p>
+                    <h3>{{ __('messages.competitive_edge') }}</h3>
+                    <p>{{ __('messages.competitive_edge_desc') }}</p>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <!-- Sports We Offer -->
+    <section class="sports-list" id="sports">
+        <div class="container">
+            <h2 class="section-title">{{ __('messages.sports_focus') }}</h2>
+            <p class="section-subtitle">{{ __('messages.sports_focus_sub') }}</p>
+            <div class="sports-grid">
+                @foreach($sports as $sport)
+                    <div class="sport-item">{{ $sport }}</div>
+                @endforeach
             </div>
         </div>
     </section>
@@ -742,75 +972,29 @@
     <!-- Team Section -->
     <section class="team" id="team">
         <div class="container">
-            <h2 class="section-title">Our Expert Team</h2>
-            <p class="section-subtitle">Meet the dedicated coaches and staff driving excellence in sports education</p>
+            <h2 class="section-title">{{ __('messages.our_team') }}</h2>
+            <p class="section-subtitle">{{ __('messages.our_team_sub') }}</p>
             
             <div class="team-grid">
-                <div class="team-member">
-                    <div class="team-member-image">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=500&fit=crop" alt="Coach Michael">
+                @foreach($teamMembers as $member)
+                    <div class="team-member">
+                        <div class="team-member-image loading">
+                            <img src="{{ asset($member['image']) }}" alt="{{ $member['name'] }}"
+                                 onload="this.parentElement.classList.remove('loading')"
+                                 onerror="this.parentElement.classList.remove('loading'); this.parentElement.classList.add('error')">
+                            <svg class="placeholder-icon" viewBox="0 0 24 24" fill="#999">
+                                <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
+                            </svg>
+                        </div>
+                        <div class="team-member-info">
+                            <div class="team-member-name">{{ $member['name'] }}</div>
+                            @if(!empty($member['role']))
+                                <div class="team-member-role">{{ $member['role'] }}</div>
+                            @endif
+                            <div class="team-member-bio">{{ $member['bio'] }}</div>
+                        </div>
                     </div>
-                    <div class="team-member-info">
-                        <div class="team-member-name">Michael Johnson</div>
-                        <div class="team-member-role">Head Football Coach</div>
-                        <div class="team-member-bio">15+ years coaching experience. Specialized in offensive strategy and player development. Former professional player.</div>
-                    </div>
-                </div>
-
-                <div class="team-member">
-                    <div class="team-member-image">
-                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=500&fit=crop" alt="Coach Sarah">
-                    </div>
-                    <div class="team-member-info">
-                        <div class="team-member-name">Sarah Williams</div>
-                        <div class="team-member-role">Basketball Coach</div>
-                        <div class="team-member-bio">Certified coach with passion for developing young talent. Specializes in shooting technique and conditioning.</div>
-                    </div>
-                </div>
-
-                <div class="team-member">
-                    <div class="team-member-image">
-                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=500&fit=crop" alt="Coach James">
-                    </div>
-                    <div class="team-member-info">
-                        <div class="team-member-name">James Chen</div>
-                        <div class="team-member-role">Soccer Coach & Program Director</div>
-                        <div class="team-member-bio">International coaching certification. Experienced in youth development and competitive team management.</div>
-                    </div>
-                </div>
-
-                <div class="team-member">
-                    <div class="team-member-image">
-                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=500&fit=crop" alt="Coach Emma">
-                    </div>
-                    <div class="team-member-info">
-                        <div class="team-member-name">Emma Rodriguez</div>
-                        <div class="team-member-role">Volleyball Coach</div>
-                        <div class="team-member-bio">Specializes in technical skills and team coordination. Olympic training center experience.</div>
-                    </div>
-                </div>
-
-                <div class="team-member">
-                    <div class="team-member-image">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=500&fit=crop" alt="Coach David">
-                    </div>
-                    <div class="team-member-info">
-                        <div class="team-member-name">David Okafor</div>
-                        <div class="team-member-role">Athletics Coach</div>
-                        <div class="team-member-bio">Specialized in track and field training. Expert in sprint, jump, and distance training programs.</div>
-                    </div>
-                </div>
-
-                <div class="team-member">
-                    <div class="team-member-image">
-                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=500&fit=crop" alt="Coach Lisa">
-                    </div>
-                    <div class="team-member-info">
-                        <div class="team-member-name">Lisa Anderson</div>
-                        <div class="team-member-role">Fitness & Conditioning Coach</div>
-                        <div class="team-member-bio">Certified nutritionist and strength coach. Develops personalized fitness programs for peak performance.</div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>
@@ -818,103 +1002,103 @@
     <!-- Programs Section -->
     <section class="programs" id="programs">
         <div class="container">
-            <h2 class="section-title">Our Programs</h2>
-            <p class="section-subtitle">Comprehensive training programs for all ages and skill levels</p>
+            <h2 class="section-title">{{ __('messages.our_programs') }}</h2>
+            <p class="section-subtitle">{{ __('messages.programs_sub') }}</p>
             
             <div class="programs-grid">
                 <div class="program-card">
                     <div class="program-header">
-                        <h3>⚽ Soccer Academy</h3>
+                        <h3>⚽ {{ __('messages.soccer_academy') }}</h3>
                     </div>
                     <div class="program-body">
                         <ul>
-                            <li>Age 6-18 programs</li>
-                            <li>Technical skill development</li>
-                            <li>Tactical team training</li>
-                            <li>Competitive league</li>
-                            <li>Weekend tournaments</li>
+                            <li>{{ __('messages.age_6_18') }}</li>
+                            <li>{{ __('messages.technical_skill') }}</li>
+                            <li>{{ __('messages.tactical_team') }}</li>
+                            <li>{{ __('messages.competitive_league') }}</li>
+                            <li>{{ __('messages.weekend_tournaments') }}</li>
                         </ul>
-                        <a href="#contact" class="cta-button" style="width: 100%; display: block;">Learn More</a>
+                        <a href="#contact" class="cta-button" style="width: 100%; display: block;">{{ __('messages.learn_more') }}</a>
                     </div>
                 </div>
 
                 <div class="program-card">
                     <div class="program-header">
-                        <h3>🏀 Basketball Elite</h3>
+                        <h3>🏀 {{ __('messages.basketball_elite') }}</h3>
                     </div>
                     <div class="program-body">
                         <ul>
-                            <li>Beginner to advanced</li>
-                            <li>Ball handling mastery</li>
-                            <li>Game strategy</li>
-                            <li>Strength training</li>
-                            <li>Tournament preparation</li>
+                            <li>{{ __('messages.beginner_advanced') }}</li>
+                            <li>{{ __('messages.ball_handling') }}</li>
+                            <li>{{ __('messages.game_strategy') }}</li>
+                            <li>{{ __('messages.strength_training') }}</li>
+                            <li>{{ __('messages.tournament_prep') }}</li>
                         </ul>
-                        <a href="#contact" class="cta-button" style="width: 100%; display: block;">Learn More</a>
+                        <a href="#contact" class="cta-button" style="width: 100%; display: block;">{{ __('messages.learn_more') }}</a>
                     </div>
                 </div>
 
                 <div class="program-card">
                     <div class="program-header">
-                        <h3>🏐 Volleyball Training</h3>
+                        <h3>🏐 {{ __('messages.volleyball_training') }}</h3>
                     </div>
                     <div class="program-body">
                         <ul>
-                            <li>All skill levels</li>
-                            <li>Serving & receiving</li>
-                            <li>Team formations</li>
-                            <li>Agility training</li>
-                            <li>Club tournaments</li>
+                            <li>{{ __('messages.all_skill_levels') }}</li>
+                            <li>{{ __('messages.serving_receiving') }}</li>
+                            <li>{{ __('messages.team_formations') }}</li>
+                            <li>{{ __('messages.agility_training') }}</li>
+                            <li>{{ __('messages.club_tournaments') }}</li>
                         </ul>
-                        <a href="#contact" class="cta-button" style="width: 100%; display: block;">Learn More</a>
+                        <a href="#contact" class="cta-button" style="width: 100%; display: block;">{{ __('messages.learn_more') }}</a>
                     </div>
                 </div>
 
                 <div class="program-card">
                     <div class="program-header">
-                        <h3>🏃 Athletics Program</h3>
+                        <h3>🏃 {{ __('messages.athletics_program') }}</h3>
                     </div>
                     <div class="program-body">
                         <ul>
-                            <li>Sprint & distance</li>
-                            <li>Jump training</li>
-                            <li>Endurance building</li>
-                            <li>Form correction</li>
-                            <li>Regional competitions</li>
+                            <li>{{ __('messages.sprint_distance') }}</li>
+                            <li>{{ __('messages.jump_training') }}</li>
+                            <li>{{ __('messages.endurance_building') }}</li>
+                            <li>{{ __('messages.form_correction') }}</li>
+                            <li>{{ __('messages.regional_competitions') }}</li>
                         </ul>
-                        <a href="#contact" class="cta-button" style="width: 100%; display: block;">Learn More</a>
+                        <a href="#contact" class="cta-button" style="width: 100%; display: block;">{{ __('messages.learn_more') }}</a>
                     </div>
                 </div>
 
                 <div class="program-card">
                     <div class="program-header">
-                        <h3>🏈 Football Academy</h3>
+                        <h3>🏈 {{ __('messages.football_academy') }}</h3>
                     </div>
                     <div class="program-body">
                         <ul>
-                            <li>Offensive strategies</li>
-                            <li>Defensive techniques</li>
-                            <li>Position specialty</li>
-                            <li>Strength & speed</li>
-                            <li>League competitions</li>
+                            <li>{{ __('messages.offensive_strategies') }}</li>
+                            <li>{{ __('messages.defensive_techniques') }}</li>
+                            <li>{{ __('messages.position_specialty') }}</li>
+                            <li>{{ __('messages.strength_speed') }}</li>
+                            <li>{{ __('messages.league_competitions') }}</li>
                         </ul>
-                        <a href="#contact" class="cta-button" style="width: 100%; display: block;">Learn More</a>
+                        <a href="#contact" class="cta-button" style="width: 100%; display: block;">{{ __('messages.learn_more') }}</a>
                     </div>
                 </div>
 
                 <div class="program-card">
                     <div class="program-header">
-                        <h3>🏊 Swimming & Water Sports</h3>
+                        <h3>🏊 {{ __('messages.swimming_water') }}</h3>
                     </div>
                     <div class="program-body">
                         <ul>
-                            <li>Swimming techniques</li>
-                            <li>Water safety</li>
-                            <li>Competitive swimming</li>
-                            <li>Diving basics</li>
-                            <li>Summer camps</li>
+                            <li>{{ __('messages.swimming_techniques') }}</li>
+                            <li>{{ __('messages.water_safety') }}</li>
+                            <li>{{ __('messages.competitive_swimming') }}</li>
+                            <li>{{ __('messages.diving_basics') }}</li>
+                            <li>{{ __('messages.summer_camps') }}</li>
                         </ul>
-                        <a href="#contact" class="cta-button" style="width: 100%; display: block;">Learn More</a>
+                        <a href="#contact" class="cta-button" style="width: 100%; display: block;">{{ __('messages.learn_more') }}</a>
                     </div>
                 </div>
             </div>
@@ -924,72 +1108,72 @@
     <!-- Testimonials Section -->
     <section class="testimonials">
         <div class="container">
-            <h2 class="section-title">Success Stories</h2>
-            <p class="section-subtitle">Hear from parents and athletes who've experienced NK EDUCATIF</p>
+            <h2 class="section-title">{{ __('messages.success_stories') }}</h2>
+            <p class="section-subtitle">{{ __('messages.success_stories_sub') }}</p>
             
             <div class="testimonials-grid">
                 <div class="testimonial-card">
-                    <div class="testimonial-text">"My son's confidence and skills improved dramatically. The coaches are passionate and truly care about every athlete's development."</div>
+                    <div class="testimonial-text">"{{ __('messages.testimonial_1') }}"</div>
                     <div class="testimonial-author">
                         <div class="testimonial-avatar">👨‍👧</div>
                         <div class="testimonial-info">
                             <h4>Robert Thompson</h4>
-                            <p>Parent, Soccer Academy</p>
+                            <p>{{ __('messages.parent_soccer') }}</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="testimonial-card">
-                    <div class="testimonial-text">"The training methodology is excellent. I learned so much about technique and strategy. I'm now playing at a competitive level!"</div>
+                    <div class="testimonial-text">"{{ __('messages.testimonial_2') }}"</div>
                     <div class="testimonial-author">
                         <div class="testimonial-avatar">👩‍🎓</div>
                         <div class="testimonial-info">
                             <h4>Maya Patel</h4>
-                            <p>Basketball Athlete</p>
+                            <p>{{ __('messages.basketball_athlete') }}</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="testimonial-card">
-                    <div class="testimonial-text">"The facilities are world-class and the coaching staff is incredibly supportive. This is where we invest in our children's future."</div>
+                    <div class="testimonial-text">"{{ __('messages.testimonial_3') }}"</div>
                     <div class="testimonial-author">
                         <div class="testimonial-avatar">👨‍💼</div>
                         <div class="testimonial-info">
                             <h4>Ahmed Hassan</h4>
-                            <p>Parent, Football Academy</p>
+                            <p>{{ __('messages.parent_football') }}</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="testimonial-card">
-                    <div class="testimonial-text">"I went from beginner to competitive player in just one season. The structured progression and expert guidance made all the difference."</div>
+                    <div class="testimonial-text">"{{ __('messages.testimonial_4') }}"</div>
                     <div class="testimonial-author">
                         <div class="testimonial-avatar">👩‍🏫</div>
                         <div class="testimonial-info">
                             <h4>Jessica Martinez</h4>
-                            <p>Volleyball Athlete</p>
+                            <p>{{ __('messages.volleyball_athlete') }}</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="testimonial-card">
-                    <div class="testimonial-text">"The atmosphere is so encouraging and positive. My daughter loves coming to practice every day. The team spirit is amazing!"</div>
+                    <div class="testimonial-text">"{{ __('messages.testimonial_5') }}"</div>
                     <div class="testimonial-author">
                         <div class="testimonial-avatar">👩‍👧‍👦</div>
                         <div class="testimonial-info">
                             <h4>Patricia Lopez</h4>
-                            <p>Parent, Multiple Programs</p>
+                            <p>{{ __('messages.parent_multiple') }}</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="testimonial-card">
-                    <div class="testimonial-text">"Best investment we made for our kids. They've grown as athletes and as people. Highly recommended to every family!"</div>
+                    <div class="testimonial-text">"{{ __('messages.testimonial_6') }}"</div>
                     <div class="testimonial-author">
                         <div class="testimonial-avatar">👨‍👨‍👧</div>
                         <div class="testimonial-info">
                             <h4>Kevin Wilson</h4>
-                            <p>Parent, Athletics & Soccer</p>
+                            <p>{{ __('messages.parent_athletics') }}</p>
                         </div>
                     </div>
                 </div>
@@ -1000,86 +1184,66 @@
     <!-- FAQ Section -->
     <section class="faq">
         <div class="container">
-            <h2 class="section-title">Frequently Asked Questions</h2>
+            <h2 class="section-title">{{ __('messages.faq_title') }}</h2>
             
             <div class="faq-container">
                 <div class="faq-item active">
                     <div class="faq-question">
-                        <span>What age groups do you serve?</span>
+                        <span>{{ __('messages.faq_age') }}</span>
                         <span class="faq-toggle">+</span>
                     </div>
                     <div class="faq-answer">
-                        We offer programs for children ages 5 through 18, with specialized training programs tailored to different age groups and skill levels. We also offer adult recreational programs for fitness enthusiasts.
+                        {{ __('messages.faq_age_answer') }}
                     </div>
                 </div>
 
                 <div class="faq-item">
                     <div class="faq-question">
-                        <span>Do I need prior experience to join?</span>
+                        <span>{{ __('messages.faq_experience') }}</span>
                         <span class="faq-toggle">+</span>
                     </div>
                     <div class="faq-answer">
-                        No prior experience is necessary! We have beginner-friendly programs that teach fundamental skills from scratch. Our coaches are trained to work with athletes at all levels.
+                        {{ __('messages.faq_experience_answer') }}
                     </div>
                 </div>
 
                 <div class="faq-item">
                     <div class="faq-question">
-                        <span>What is the instructor-to-student ratio?</span>
+                        <span>{{ __('messages.faq_ratio') }}</span>
                         <span class="faq-toggle">+</span>
                     </div>
                     <div class="faq-answer">
-                        Our average instructor-to-student ratio is 1:8, ensuring personalized attention and quality coaching for every athlete in our programs.
+                        {{ __('messages.faq_ratio_answer') }}
                     </div>
                 </div>
 
                 <div class="faq-item">
                     <div class="faq-question">
-                        <span>How often are the training sessions?</span>
+                        <span>{{ __('messages.faq_sessions') }}</span>
                         <span class="faq-toggle">+</span>
                     </div>
                     <div class="faq-answer">
-                        Most programs run 2-3 times per week, with competitive teams training more frequently. Sessions are typically 90 minutes to 2 hours long, depending on the program.
+                        {{ __('messages.faq_sessions_answer') }}
                     </div>
                 </div>
 
                 <div class="faq-item">
                     <div class="faq-question">
-                        <span>What are the program fees?</span>
+                        <span>{{ __('messages.faq_safety') }}</span>
                         <span class="faq-toggle">+</span>
                     </div>
                     <div class="faq-answer">
-                        Fees vary by program and age group, ranging from $120-$350 per month. We offer scholarship opportunities and flexible payment plans for qualified families. Contact us for specific pricing.
+                        {{ __('messages.faq_safety_answer') }}
                     </div>
                 </div>
 
                 <div class="faq-item">
                     <div class="faq-question">
-                        <span>What safety measures do you have in place?</span>
+                        <span>{{ __('messages.faq_register') }}</span>
                         <span class="faq-toggle">+</span>
                     </div>
                     <div class="faq-answer">
-                        All our coaches are certified in First Aid and CPR. We maintain strict safety protocols, proper facility maintenance, and age-appropriate equipment. We also have comprehensive insurance coverage.
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>Do you offer scholarships?</span>
-                        <span class="faq-toggle">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        Yes! We believe quality sports education should be accessible to all. We offer need-based scholarships and financial assistance programs. Please contact our office to learn more.
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>How do I register for a program?</span>
-                        <span class="faq-toggle">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        You can register online through our website, visit our office in person, or call us. We offer a free trial session so you can experience our programs before committing.
+                        {{ __('messages.faq_register_answer') }}
                     </div>
                 </div>
             </div>
@@ -1089,12 +1253,14 @@
     <!-- Call to Action -->
     <section class="cta-section" id="contact">
         <div class="container">
-            <h2>Ready to Join NK EDUCATIF?</h2>
-            <p>Start your journey to athletic excellence. Contact us today for a free trial session!</p>
+            <h2>{{ __('messages.cta_title') }}</h2>
+            <p>{{ __('messages.cta_subtitle') }}</p>
+            <p style="margin-top:0.5rem; font-size:0.9rem; opacity:0.9;">{{ $address }}</p>
             <div>
-                <a href="mailto:contact@nkeducatif.com" class="cta-button">Send an Email</a>
-                <a href="tel:+1234567890" class="cta-button cta-button-secondary">Call Us</a>
+                <a href="mailto:{{ $email }}" class="cta-button">{{ __('messages.send_email') }}</a>
+                <a href="tel:{{ $phone }}" class="cta-button cta-button-secondary">{{ __('messages.call_us') }}</a>
             </div>
+            <p style="margin-top:1rem; font-size:0.95rem; color:#eee;">{{ $address }}</p>
         </div>
     </section>
 
@@ -1102,39 +1268,39 @@
     <footer>
         <div class="footer-content">
             <div class="footer-section">
-                <h3>NK EDUCATIF</h3>
-                <p style="color: #ccc; margin-bottom: 1rem;">Excellence in sports education. Building champions through professional coaching and modern facilities.</p>
+                <h3>{{ __('messages.app_name') }}</h3>
+                <p style="color: #ccc; margin-bottom: 1rem;">{{ __('messages.footer_tagline') }}</p>
             </div>
             <div class="footer-section">
-                <h3>Programs</h3>
+                <h3>{{ __('messages.footer_programs') }}</h3>
                 <ul>
-                    <li><a href="#programs">Soccer Academy</a></li>
-                    <li><a href="#programs">Basketball Elite</a></li>
-                    <li><a href="#programs">Volleyball Training</a></li>
-                    <li><a href="#programs">Athletics Program</a></li>
+                    <li><a href="#programs">{{ __('messages.soccer_academy') }}</a></li>
+                    <li><a href="#programs">{{ __('messages.basketball_elite') }}</a></li>
+                    <li><a href="#programs">{{ __('messages.volleyball_training') }}</a></li>
+                    <li><a href="#programs">{{ __('messages.athletics_program') }}</a></li>
                 </ul>
             </div>
             <div class="footer-section">
-                <h3>About</h3>
+                <h3>{{ __('messages.footer_about') }}</h3>
                 <ul>
-                    <li><a href="#team">Our Team</a></li>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#team">{{ __('messages.footer_our_team') }}</a></li>
+                    <li><a href="#home">{{ __('messages.nav_home') }}</a></li>
+                    <li><a href="#contact">{{ __('messages.nav_contact') }}</a></li>
+                    <li><a href="#">{{ __('messages.footer_privacy') }}</a></li>
                 </ul>
             </div>
             <div class="footer-section">
-                <h3>Contact</h3>
+                <h3>{{ __('messages.footer_contact') }}</h3>
                 <ul>
-                    <li><a href="mailto:contact@nkeducatif.com">📧 contact@nkeducatif.com</a></li>
-                    <li><a href="tel:+1234567890">📞 +1 (234) 567-890</a></li>
-                    <li><a href="#">📍 123 Sports Avenue, City, Country</a></li>
-                    <li><a href="#">Monday - Friday: 9AM - 6PM</a></li>
+                    <li><a href="mailto:{{ $email }}">📧 {{ $email }}</a></li>
+                    <li><a href="tel:{{ $phone }}">📞 {{ $phone }}</a></li>
+                    <li><a href="#">📍 {{ $address }}</a></li>
+                    <li><a href="#">{{ __('messages.footer_hours') }}</a></li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2026 NK EDUCATIF SPORTIF. All rights reserved. | Excellence in Sports Education</p>
+            <p>&copy; {{ date('Y') }} {{ __('messages.app_name') }}. {{ __('messages.footer_rights') }}</p>
         </div>
     </footer>
 
@@ -1145,28 +1311,28 @@
             
             <div style="padding: 40px;">
                 <div style="text-align: center; margin-bottom: 30px;">
-                    <h2 style="color: var(--text-dark); font-size: 28px; margin-bottom: 10px;">🏆 Sports Registration</h2>
-                    <p style="color: #666; font-size: 14px;">Join NK EDUCATIF SPORTIF and pursue your passion for sports</p>
+                    <h2 style="color: var(--text-dark); font-size: 28px; margin-bottom: 10px;">🏆 {{ __('messages.sports_registration') }}</h2>
+                    <p style="color: #666; font-size: 14px;">{{ __('messages.registration_sub') }}</p>
                 </div>
 
                 <form id="registrationForm">
                     @csrf
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
                         <div>
-                            <label style="display: block; margin-bottom: 8px; color: #333; font-weight: 600; font-size: 14px;">Full Name *</label>
-                            <input type="text" id="full_name" name="full_name" placeholder="Your full name" required style="width: 100%; padding: 12px 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; font-family: inherit; transition: all 0.3s ease;">
+                            <label style="display: block; margin-bottom: 8px; color: #333; font-weight: 600; font-size: 14px;">{{ __('messages.full_name') }} *</label>
+                            <input type="text" id="full_name" name="full_name" placeholder="{{ __('messages.full_name_placeholder') }}" required style="width: 100%; padding: 12px 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; font-family: inherit; transition: all 0.3s ease;">
                         </div>
 
                         <div>
-                            <label style="display: block; margin-bottom: 8px; color: #333; font-weight: 600; font-size: 14px;">Email *</label>
-                            <input type="email" id="email" name="email" placeholder="your@email.com" required style="width: 100%; padding: 12px 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; font-family: inherit; transition: all 0.3s ease;">
+                            <label style="display: block; margin-bottom: 8px; color: #333; font-weight: 600; font-size: 14px;">{{ __('messages.email') }} *</label>
+                            <input type="email" id="email" name="email" placeholder="{{ __('messages.email_placeholder') }}" required style="width: 100%; padding: 12px 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; font-family: inherit; transition: all 0.3s ease;">
                         </div>
                     </div>
 
                     <div style="margin-bottom: 20px;">
-                        <label style="display: block; margin-bottom: 8px; color: #333; font-weight: 600; font-size: 14px;">Select Sport *</label>
+                        <label style="display: block; margin-bottom: 8px; color: #333; font-weight: 600; font-size: 14px;">{{ __('messages.select_sport') }} *</label>
                         <select id="sport_name" name="sport_name" required style="width: 100%; padding: 12px 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; font-family: inherit; transition: all 0.3s ease;">
-                            <option value="">-- Choose a Sport --</option>
+                            <option value="">{{ __('messages.choose_sport') }}</option>
                             @foreach($sports as $sport)
                                 <option value="{{ $sport }}">{{ $sport }}</option>
                             @endforeach
@@ -1175,52 +1341,52 @@
 
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
                         <div>
-                            <label style="display: block; margin-bottom: 8px; color: #333; font-weight: 600; font-size: 14px;">Age Group *</label>
+                            <label style="display: block; margin-bottom: 8px; color: #333; font-weight: 600; font-size: 14px;">{{ __('messages.age_group') }} *</label>
                             <select id="age_group" name="age_group" required style="width: 100%; padding: 12px 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; font-family: inherit; transition: all 0.3s ease;">
-                                <option value="">-- Select Age Group --</option>
-                                <option value="U18">U18 (Under 18)</option>
-                                <option value="U20">U20 (Under 20)</option>
-                                <option value="U25">U25 (Under 25)</option>
-                                <option value="Senior">Senior (25+)</option>
+                                <option value="">{{ __('messages.select_age_group') }}</option>
+                                <option value="U18">{{ __('messages.u18') }}</option>
+                                <option value="U20">{{ __('messages.u20') }}</option>
+                                <option value="U25">{{ __('messages.u25') }}</option>
+                                <option value="Senior">{{ __('messages.senior') }}</option>
                             </select>
                         </div>
 
                         <div>
-                            <label style="display: block; margin-bottom: 8px; color: #333; font-weight: 600; font-size: 14px;">Gender *</label>
+                            <label style="display: block; margin-bottom: 8px; color: #333; font-weight: 600; font-size: 14px;">{{ __('messages.gender') }} *</label>
                             <select id="gender" name="gender" required style="width: 100%; padding: 12px 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; font-family: inherit; transition: all 0.3s ease;">
-                                <option value="">-- Select Gender --</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                <option value="Other">Other</option>
+                                <option value="">{{ __('messages.select_gender') }}</option>
+                                <option value="Male">{{ __('messages.male') }}</option>
+                                <option value="Female">{{ __('messages.female') }}</option>
+                                <option value="Other">{{ __('messages.other') }}</option>
                             </select>
                         </div>
                     </div>
 
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
                         <div>
-                            <label style="display: block; margin-bottom: 8px; color: #333; font-weight: 600; font-size: 14px;">Position (Optional)</label>
-                            <input type="text" id="position" name="position" placeholder="e.g., Goalkeeper, Forward" style="width: 100%; padding: 12px 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; font-family: inherit; transition: all 0.3s ease;">
+                            <label style="display: block; margin-bottom: 8px; color: #333; font-weight: 600; font-size: 14px;">{{ __('messages.position') }}</label>
+                            <input type="text" id="position" name="position" placeholder="{{ __('messages.position_placeholder') }}" style="width: 100%; padding: 12px 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; font-family: inherit; transition: all 0.3s ease;">
                         </div>
 
                         <div>
-                            <label style="display: block; margin-bottom: 8px; color: #333; font-weight: 600; font-size: 14px;">Jersey Number (Optional)</label>
-                            <input type="text" id="jersey_number" name="jersey_number" placeholder="e.g., 7" style="width: 100%; padding: 12px 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; font-family: inherit; transition: all 0.3s ease;">
+                            <label style="display: block; margin-bottom: 8px; color: #333; font-weight: 600; font-size: 14px;">{{ __('messages.jersey_number') }}</label>
+                            <input type="text" id="jersey_number" name="jersey_number" placeholder="{{ __('messages.jersey_placeholder') }}" style="width: 100%; padding: 12px 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; font-family: inherit; transition: all 0.3s ease;">
                         </div>
                     </div>
 
                     <div style="margin-bottom: 20px;">
-                        <label style="display: block; margin-bottom: 8px; color: #333; font-weight: 600; font-size: 14px;">Phone Number (Optional)</label>
-                        <input type="tel" id="phone" name="phone" placeholder="Your phone number" style="width: 100%; padding: 12px 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; font-family: inherit; transition: all 0.3s ease;">
+                        <label style="display: block; margin-bottom: 8px; color: #333; font-weight: 600; font-size: 14px;">{{ __('messages.phone') }}</label>
+                        <input type="tel" id="phone" name="phone" placeholder="{{ __('messages.phone_placeholder') }}" style="width: 100%; padding: 12px 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; font-family: inherit; transition: all 0.3s ease;">
                     </div>
 
                     <div style="margin-bottom: 20px;">
-                        <label style="display: block; margin-bottom: 8px; color: #333; font-weight: 600; font-size: 14px;">Additional Notes (Optional)</label>
-                        <textarea id="notes" name="notes" placeholder="Tell us about yourself, your experience, or any special requirements..." style="width: 100%; padding: 12px 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; font-family: inherit; resize: vertical; min-height: 100px; transition: all 0.3s ease;"></textarea>
+                        <label style="display: block; margin-bottom: 8px; color: #333; font-weight: 600; font-size: 14px;">{{ __('messages.additional_notes') }}</label>
+                        <textarea id="notes" name="notes" placeholder="{{ __('messages.notes_placeholder') }}" style="width: 100%; padding: 12px 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; font-family: inherit; resize: vertical; min-height: 100px; transition: all 0.3s ease;"></textarea>
                     </div>
 
                     <button type="submit" style="width: 100%; padding: 14px; background: linear-gradient(135deg, var(--primary-green), var(--primary-orange)); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; margin-top: 20px;">
-                        <span class="submit-text">Register Now</span>
-                        <span class="loading" id="loading" style="display: none;">Registering...</span>
+                        <span class="submit-text">{{ __('messages.register_now') }}</span>
+                        <span class="loading" id="loading" style="display: none;">{{ __('messages.registering') }}</span>
                     </button>
                 </form>
             </div>
@@ -1231,12 +1397,12 @@
     <div id="successModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); align-items: center; justify-content: center; z-index: 2001;">
         <div style="background: white; padding: 40px; border-radius: 15px; text-align: center; max-width: 400px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);">
             <div style="font-size: 50px; margin-bottom: 20px;">✅</div>
-            <h2 style="color: #27ae60; margin-bottom: 15px; font-size: 24px;">Registration Successful!</h2>
+            <h2 style="color: #27ae60; margin-bottom: 15px; font-size: 24px;">{{ __('messages.registration_success') }}</h2>
             <p style="color: #666; margin-bottom: 25px; line-height: 1.6;">
-                Thank you for registering! Your application has been submitted successfully. Our admin team will review your registration and contact you soon.
+                {{ __('messages.registration_success_msg') }}
             </p>
             <button onclick="closeSuccessModal()" style="background: linear-gradient(135deg, var(--primary-green), var(--primary-orange)); color: white; border: none; padding: 12px 30px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; width: 100%;">
-                Close
+                {{ __('messages.close') }}
             </button>
         </div>
     </div>
@@ -1309,6 +1475,30 @@
             }
         });
 
+        // dynamic greeting in hero
+        function updateGreeting() {
+            const now = new Date();
+            const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+            const options = { month:'long', day:'numeric' };
+            const text = `Good ${now.getHours() < 12 ? 'morning' : now.getHours() < 18 ? 'afternoon' : 'evening'}, today is ${days[now.getDay()]}, ${now.toLocaleDateString(undefined, options)}.`;
+            const el = document.getElementById('hero-greeting');
+            if(el) el.textContent = text;
+        }
+        updateGreeting();
+
+        // mobile menu toggle handler
+        function toggleMenu() {
+            const ul = document.querySelector('nav ul');
+            ul.classList.toggle('show');
+        }
+        // close menu when a nav link is clicked (useful for mobile)
+        document.querySelectorAll('nav ul a').forEach(link => {
+            link.addEventListener('click', () => {
+                const ul = document.querySelector('nav ul');
+                if (ul.classList.contains('show')) ul.classList.remove('show');
+            });
+        });
+
         // FAQ Toggle
         document.querySelectorAll('.faq-question').forEach(question => {
             question.addEventListener('click', function() {
@@ -1340,6 +1530,51 @@
         document.querySelectorAll('.feature-card, .team-member, .program-card, .testimonial-card').forEach(el => {
             observer.observe(el);
         });
+
+        // animate numbers when stats appear
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.querySelectorAll('.stat-number').forEach(el => {
+                        const target = parseInt(el.getAttribute('data-target')) || 0;
+                        let count = 0;
+                        const step = Math.ceil(target / 100);
+                        const interval = setInterval(() => {
+                            count += step;
+                            if (count >= target) {
+                                el.textContent = target + '+';
+                                clearInterval(interval);
+                            } else {
+                                el.textContent = count + '+';
+                            }
+                        }, 20);
+                    });
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        }, {threshold: 0.3});
+        statsObserver.observe(document.querySelector('.hero-stats'));
+
+        // testimonial carousel
+        const testimonials = document.querySelectorAll('.testimonial-card');
+        let currentTestimonial = 0;
+        function showTestimonial(i) {
+            testimonials.forEach((t, idx) => {
+                t.style.display = idx === i ? 'block' : 'none';
+            });
+            // ensure container keeps height of current card
+            const container = document.querySelector('.testimonials-grid');
+            if(container && testimonials[i]) {
+                container.style.height = testimonials[i].offsetHeight + 'px';
+            }
+        }
+        if(testimonials.length){
+            showTestimonial(0);
+            setInterval(() => {
+                currentTestimonial = (currentTestimonial + 1) % testimonials.length;
+                showTestimonial(currentTestimonial);
+            }, 5000);
+        }
     </script>
 </body>
 </html>

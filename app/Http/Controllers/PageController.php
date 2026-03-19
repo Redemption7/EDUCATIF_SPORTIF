@@ -6,42 +6,141 @@ class PageController extends Controller
 {
     public function home()
     {
+        // full list pulled from project document
         $sports = [
-            'Football',
             'Basketball',
+            'Soccer',
+            'Handball',
+            'Netball',
             'Volleyball',
             'Tennis',
-            'Athletics',
-            'Swimming',
-            'Badminton',
             'Table Tennis',
-            'Martial Arts',
+            'Badminton',
+            'Baseball5',
+            'Baseball',
+            'Softball',
+            'Hockey',
+            'Flag Football',
             'Cricket'
+            // etc. can be added as needed
         ];
 
+        // dynamic statistics
+        // if database is empty, provide reasonable default so UI still looks good
+        $activeAthletes = max(500, \App\Models\SportsRegistration::count());
+        $expertCoaches  = 25; // adjust if coach model added
+        $programsCount  = max(12, count($sports));
+
         $data = [
-            'projectName' => 'NK EDUCATIF SPORTIF',
+            'projectName' => __('messages.app_name'),
             'sports' => $sports,
-            'about' => 'NK EDUCATIF SPORTIF Founded in April 2025 is dedicated to providing a safe, inclusive, environmental sports culture for all ages.',
-            'mission' => 'Empower Minds through Sports and Education. To provide a quality yearly sports training program for youths and adults competition leagues across Africa.',
-            'unifyMission' => 'NKES biggest mission is to unify the continent of Africa through sports. We believe that sports are more than just a game, sports will help build friendships, unity and love. Our commitment is to ensure that every child across Africa has the opportunity to join the NKES to learn and play sports.',
-            'vision' => 'To be the premier pan-African sports academy, harnessing the unifying power of sports to bridge cultural and national divides, foster mutual understanding, and empower the next generation of African leaders.',
+            'about' => __('messages.about_text'),
+            'mission' => __('messages.mission_text'),
+            'unifyMission' => __('messages.unify_mission'),
+            'vision' => __('messages.vision_text'),
             'visionPoints' => [
-                'Promote sports excellence and development across Africa',
-                'Foster cross-cultural exchange and collaboration among athletes, coaches, and officials',
-                'Develop leadership and life skills through sports',
-                'Support African athletes in international competitions',
-                'Encourage social cohesion and unity through sports events and initiatives'
+                __('messages.vision_point_1'),
+                __('messages.vision_point_2'),
+                __('messages.vision_point_3'),
+                __('messages.vision_point_4'),
+                __('messages.vision_point_5'),
             ],
             'objectives' => [
-                'Offering recreational and competitive leagues within Africa for all skill levels',
-                'Build different strongest African teams in all sports activities and give them the opportunity to represent the continent of Africa',
-                'Foster a culture of zero tolerance for sexual abuse, harassment, and gender-based violence in sports',
-                'Promote gender equality and inclusivity in sports',
-                'Develop the whole child through sports and character development'
+                __('messages.objective_1'),
+                __('messages.objective_2'),
+                __('messages.objective_3'),
+                __('messages.objective_4'),
+                __('messages.objective_5'),
+            ],
+            'address' => 'P.O Box 50472, Great Road Lilayi 10, LUSAKA ZAMBIA',
+            'phone' => '+18174497227',
+            'email' => 'nkes.academy@nkes-sports.org',
+            'tagline' => __('messages.tagline'),
+            'subtagline' => __('messages.subtagline'),
+            'activeAthletes' => $activeAthletes,
+            'expertCoaches' => $expertCoaches,
+            'programsCount' => $programsCount,
+            'teamMembers' => [
+                [
+                    'name' => __('messages.team_1_name'),
+                    'role' => __('messages.team_1_role'),
+                    'image' => 'images/ceo.png',
+                    'bio' => __('messages.team_1_bio'),
+                ],
+                [
+                    'name' => __('messages.team_2_name'),
+                    'role' => __('messages.team_2_role'),
+                    'image' => 'images/exec_director.png',
+                    'bio' => __('messages.team_2_bio'),
+                ],
+                [
+                    'name' => __('messages.team_3_name'),
+                    'role' => __('messages.team_3_role'),
+                    'image' => 'images/non_exec_director.png',
+                    'bio' => __('messages.team_3_bio'),
+                ],
+                [
+                    'name' => __('messages.team_4_name'),
+                    'role' => __('messages.team_4_role'),
+                    'image' => 'images/General Manager.png',
+                    'bio' => __('messages.team_4_bio'),
+                ],
+                [
+                    'name' => __('messages.team_5_name'),
+                    'role' => __('messages.team_5_role'),
+                    'image' => 'images/General Advisor.png',
+                    'bio' => __('messages.team_5_bio'),
+                ],
+                [
+                    'name' => __('messages.team_6_name'),
+                    'role' => __('messages.team_6_role'),
+                    'image' => 'images/Coordinator ...Gamer planner and coaches representative.png',
+                    'bio' => __('messages.team_6_bio'),
+                ],
+                [
+                    'name' => __('messages.team_7_name'),
+                    'role' => __('messages.team_7_role'),
+                    'image' => 'images/Financial manager.jpg',
+                    'bio' => __('messages.team_7_bio'),
+                ],
             ]
         ];
 
         return view('home', $data);
+    }
+
+    public function shop()
+    {
+        $jerseys = [
+            'school' => [
+                ['name' => 'Blue Jersey', 'image' => 'images/school_jesery/blue.png'],
+                ['name' => 'Red Jersey', 'image' => 'images/school_jesery/red.png'],
+                ['name' => 'Green Jersey', 'image' => 'images/school_jesery/green.png'],
+                ['name' => 'Yellow Jersey', 'image' => 'images/school_jesery/yellow.png'],
+                ['name' => 'Pink Jersey', 'image' => 'images/school_jesery/pink.png'],
+                ['name' => 'Purple Jersey', 'image' => 'images/school_jesery/purple.png'],
+                ['name' => 'Orange Jersey', 'image' => 'images/school_jesery/orange.png'],
+                ['name' => 'Grey Jersey', 'image' => 'images/school_jesery/grey.png'],
+            ],
+            'province' => [
+                ['name' => 'Blue Jersey', 'image' => 'images/province_jesery/blue.png'],
+                ['name' => 'Green Jersey', 'image' => 'images/province_jesery/green.png'],
+                ['name' => 'Orange Jersey', 'image' => 'images/province_jesery/orange.png'],
+                ['name' => 'Purple Jersey', 'image' => 'images/province_jesery/purple.png'],
+                ['name' => 'Red Jersey', 'image' => 'images/province_jesery/red.png'],
+            ],
+            'international' => [
+                ['name' => 'Soccer Jersey', 'image' => 'images/international_jesery/soccer.png'],
+                ['name' => 'Basketball Jersey', 'image' => 'images/international_jesery/basketball.png'],
+                ['name' => 'Rugby Jersey', 'image' => 'images/international_jesery/rugby.png'],
+                ['name' => 'Athletics Jersey', 'image' => 'images/international_jesery/atheletics.png'],
+            ],
+            'other' => [
+                ['name' => 'Baseball Jersey 1', 'image' => 'images/other/baseball1.png'],
+                ['name' => 'Baseball Jersey 2', 'image' => 'images/other/baseball2.png'],
+            ],
+        ];
+
+        return view('shop', compact('jerseys'));
     }
 }

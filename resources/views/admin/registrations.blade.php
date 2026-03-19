@@ -11,6 +11,17 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --primary-orange: #FF7A59;
+            --primary-green: #1D5944;
+            --accent-yellow: #FFD93D;
+            --dark-navy: #0F1419;
+            --light-gray: #F5F7FA;
+            --text-dark: #0f1419;
+            --text-light: #6b7280;
+            --border-light: #e5e7eb;
+            --bg-light: #fafbfc;
+        }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #f5f7fa;
@@ -18,7 +29,7 @@
         }
 
         .navbar {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--primary-orange) 100%);
             color: white;
             padding: 20px 40px;
             display: flex;
@@ -29,6 +40,14 @@
 
         .navbar h1 {
             font-size: 24px;
+        }
+        .navbar .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .navbar .logo img {
+            height: 40px;
         }
 
         .back-link {
@@ -49,6 +68,76 @@
             margin: 30px auto;
             padding: 0 20px;
         }
+
+        /* layout/sidebar for admin pages */
+        .layout {
+            display: flex;
+            min-height: calc(100vh - 72px);
+        }
+        .sidebar {
+            width: 250px;
+            background: var(--bg-light);
+            border-right: 1px solid var(--border-light);
+            transition: width 0.3s;
+            overflow: hidden;
+        }
+        .sidebar.collapsed {
+            width: 60px;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 20px 0;
+        }
+        .sidebar li {
+            padding: 12px 24px;
+        }
+        .sidebar a {
+            color: var(--text-dark);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+        }
+        .sidebar a:hover {
+            background: var(--bg-light);
+        }
+        .sidebar .toggle-btn {
+            position: absolute;
+            top: 10px;
+            right: -15px;
+            background: var(--primary-green);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+
+        /* Dark mode */
+        .dark-mode {
+            --text-dark: #f4f4f4;
+            --text-light: #cbd5e1;
+            --bg-light: #1f2937;
+            --border-light: #374151;
+            background: #111827;
+            color: var(--text-dark);
+        }
+        .dark-mode .sidebar {
+            background: #111827;
+        }
+        .dark-mode .navbar {
+            background: #1f2937 !important;
+        }
+        .dark-mode .back-link,
+        .dark-mode .logout-btn {
+            color: var(--text-light);
+        }
+
 
         .filters {
             background: white;
@@ -214,12 +303,26 @@
 </head>
 <body>
     <div class="navbar">
-        <h1>📋 Registrations</h1>
-        <a href="{{ route('admin.dashboard') }}" class="back-link">← Back to Dashboard</a>
+        <div class="logo">
+            <img src="{{ asset('images/logo.png') }}" alt="NKES logo" />
+            <h1>📋 Registrations</h1>
+        </div>
+        <div style="display: flex; align-items: center; gap: 16px;">
+            <button id="darkToggle" title="Toggle dark mode" style="background: transparent; border:none; color:white; font-size:18px; cursor:pointer;">🌓</button>
+            <a href="{{ route('admin.dashboard') }}" class="back-link">← Back to Dashboard</a>
+        </div>
     </div>
 
-    <div class="container">
-        <!-- Filters -->
+    <div class="layout">
+        <aside class="sidebar" id="sidebar">
+            <div class="toggle-btn" id="sidebarToggle">≡</div>
+            <ul>
+                <li><a href="{{ route('admin.dashboard') }}">🏠 Dashboard</a></li>
+                <li><a href="{{ route('admin.registrations') }}">📋 Registrations</a></li>
+            </ul>
+        </aside>
+        <div class="container" id="mainContent">
+            <!-- Filters -->
         <div class="filters">
             <form style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; width: 100%;">
                 <div class="filter-group">
@@ -311,6 +414,33 @@
                 {{ $registrations->links('pagination::bootstrap-4') }}
             </div>
         @endif
-    </div>
+        </div> <!-- end mainContent container -->
+    </div> <!-- end layout -->
+
+    <script>
+        // sidebar toggle
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+            localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+        });
+        if (localStorage.getItem('sidebarCollapsed') === 'true') {
+            sidebar.classList.add('collapsed');
+        }
+
+        // dark mode
+        const darkToggle = document.getElementById('darkToggle');
+        function applyDarkMode(enable) {
+            document.body.classList.toggle('dark-mode', enable);
+            localStorage.setItem('darkMode', enable);
+        }
+        darkToggle.addEventListener('click', () => {
+            applyDarkMode(!document.body.classList.contains('dark-mode'));
+        });
+        if (localStorage.getItem('darkMode') === 'true') {
+            applyDarkMode(true);
+        }
+    </script>
 </body>
 </html>

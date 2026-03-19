@@ -13,16 +13,21 @@ class RegistrationController extends Controller
     public function showForm()
     {
         $sports = [
-            'Football',
             'Basketball',
+            'Soccer',
+            'Handball',
+            'Netball',
             'Volleyball',
             'Tennis',
-            'Athletics',
-            'Swimming',
-            'Badminton',
             'Table Tennis',
-            'Martial Arts',
+            'Badminton',
+            'Baseball5',
+            'Baseball',
+            'Softball',
+            'Hockey',
+            'Flag Football',
             'Cricket'
+            // add others as required
         ];
 
         return view('registration.form', compact('sports'));

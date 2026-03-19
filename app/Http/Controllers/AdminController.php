@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\SportsRegistration;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class AdminController extends Controller
 {
     /**
      * Show the admin dashboard
      */
-    public function dashboard()
+    public function dashboard(Request $request)
     {
         $stats = [
             'total' => SportsRegistration::count(),
@@ -19,36 +20,68 @@ class AdminController extends Controller
             'rejected' => SportsRegistration::where('status', 'rejected')->count(),
         ];
 
-        $registrations = SportsRegistration::with('user', 'approvedBy')
-            ->latest()
-            ->paginate(15);
+        // Today's registrations
+        $stats['today'] = SportsRegistration::whereDate('created_at', Carbon::today())->count();
 
-        return view('admin.dashboard', compact('stats', 'registrations'));
-    }
+        // This week's registrations
+        $stats['this_week'] = SportsRegistration::where('created_at', '>=', Carbon::now()->startOfWeek())->count();
 
-    /**
-     * Show registrations by sport
-     */
-    public function registrationsBySort(Request $request)
-    {
-        $query = SportsRegistration::with('user', 'approvedBy');
+        // Sport breakdown for chart
+        $sportBreakdown = SportsRegistration::selectRaw('sport_name, count(*) as count')
+            ->groupBy('sport_name')
+            ->orderByDesc('count')
+            ->get();
 
-        if ($request->has('sport') && $request->sport) {
-            $query->where('sport_name', $request->sport);
+        // Gender breakdown
+        $genderBreakdown = SportsRegistration::selectRaw('gender, count(*) as count')
+            ->groupBy('gender')
+            ->get();
+
+        // Recent registrations (last 7 days trend)
+        $weeklyTrend = [];
+        for ($i = 6; $i >= 0; $i--) {
+            $date = Carbon::now()->subDays($i);
+            $weeklyTrend[] = [
+                'date' => $date->format('M d'),
+                'day' => $date->format('D'),
+                'count' => SportsRegistration::whereDate('created_at', $date)->count(),
+            ];
         }
+
+        // Age group breakdown
+        $ageBreakdown = SportsRegistration::selectRaw('age_group, count(*) as count')
+            ->groupBy('age_group')
+            ->orderByDesc('count')
+            ->get();
+
+        // Filterable registrations list
+        $query = SportsRegistration::with('user', 'approvedBy');
 
         if ($request->has('status') && $request->status) {
             $query->where('status', $request->status);
         }
-
-        if ($request->has('gender') && $request->gender) {
-            $query->where('gender', $request->gender);
+        if ($request->has('sport') && $request->sport) {
+            $query->where('sport_name', $request->sport);
         }
 
-        $registrations = $query->latest()->paginate(15);
+        $registrations = $query->latest()->paginate(10);
         $sports = SportsRegistration::distinct()->pluck('sport_name');
 
-        return view('admin.registrations', compact('registrations', 'sports'));
+        // Approval rate
+        $approvalRate = $stats['total'] > 0
+            ? round(($stats['approved'] / $stats['total']) * 100)
+            : 0;
+
+        return view('admin.dashboard', compact(
+            'stats',
+            'registrations',
+            'sports',
+            'sportBreakdown',
+            'genderBreakdown',
+            'weeklyTrend',
+            'ageBreakdown',
+            'approvalRate'
+        ));
     }
 
     /**
